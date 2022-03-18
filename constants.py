@@ -1,0 +1,1 @@
+LOG_FILEPATH = "logs/ideal-func.log"

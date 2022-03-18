@@ -15,6 +15,22 @@ Ideal: x, y1-y50
 - Load train and ideal CSV datasets into an SQLite database using sqlalchemy
 - The final table must consist 4 columns: x,y, ideal-function,deviation
 
+# Setup
+
+Python version: >= 3.10
+
+
+```
+git clone https://github.com/jamesbarboza/ideal-func.git
+cd ideal-func
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+```
+
+# run the app
+python app.py --train ../datasets/train.csv --ideal ../datasets/ideal.csv --test  ../datasets/test.csv
+```
 
 ## Resources
 
