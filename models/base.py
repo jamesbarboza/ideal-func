@@ -1,8 +1,9 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, Float 
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, Float, insert 
 import logger
 
 class BaseTableClass:
   __tablename__ = ""
+  __data__ = []
 
   def __init__(self):
     self.__engine__ = create_engine("sqlite:///db/ideal_functions.db")
@@ -16,6 +17,7 @@ class BaseTableClass:
       self.migrate_up()
     else:
       logger.info("[BaseTable] table exists for {}".format(self.__tablename__))
+      self.__table__ = Table(self.__tablename__, self.__meta_data__, autoload = True, autoload_with = self.__engine__)
 
 
   def migrate_up(self):
@@ -35,3 +37,15 @@ class BaseTableClass:
   def migrate_down(self):
     self.__table__.drop(self.__engine__)
 
+  def seed(self):
+    logger.info("Preparing data for seeding")
+    seed_data = []
+    for row in range(len(self.__data__)):
+      row_hash = {}
+      for column in range(len(self.__columns__)):
+        row_hash[self.__columns__[column]] = self.__data__[row][column]
+      seed_data.append(row_hash)
+    
+    sql_query = insert(self.__table__)
+    result = self.__connection__.execute(sql_query, seed_data)
+    logger.info("seed result for {} table: {}".format(self.__tablename__,))

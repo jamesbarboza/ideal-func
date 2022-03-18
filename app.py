@@ -1,5 +1,5 @@
 import sys
-from models.Train import Train
+from models.Train import TableDataObject
 import logger
 
 def print_help():
@@ -50,7 +50,15 @@ def run():
     logger.info("Test dataset: {}".format(test_dataset_path))
 
     # Create the train, ideal an test objects
-    train = Train(training_dataset_path)
-    # using the objects create the tables in the SQLite database
+    train = TableDataObject(training_dataset_path, "training")
+    ideal = TableDataObject(ideal_dataset_path, "ideal")
+
+    # train the model
+
+    # find ideal functions
+
+    # test idea functions on test dataset
+
+    # clean up
 
 run()
