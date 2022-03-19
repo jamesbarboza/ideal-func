@@ -1,6 +1,9 @@
 import sys
 from models.Train import TableDataObject
 import logger
+import utils
+from bokeh.plotting import show
+from bokeh.layouts import row
 
 def print_help():
   print("Usage: app.py --train <file-path> --ideal <file-path> --test <filepath>")
@@ -53,9 +56,20 @@ def run():
     train = TableDataObject(training_dataset_path, "training")
     ideal = TableDataObject(ideal_dataset_path, "ideal")
 
+    # create the visuals for train functions
+    #   get the x and y values for each line [[[x1], [y1]], [[x2], [y2]]]
+    training_lines = utils.get_lines_to_plot(train)
+    show(row(training_lines))
+
+    # create the visuals for ideal functions
+    ideal_lines = utils.get_lines_to_plot(ideal)
+    show(row(ideal_lines))
+
     # train the model
 
     # find ideal functions
+
+    # create the visuals of 4 ideal functions with thier training counterpart
 
     # test idea functions on test dataset
 

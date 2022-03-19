@@ -1,12 +1,13 @@
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, Float, insert 
 import logger
+import constants
 
 class BaseTableClass:
   __tablename__ = ""
   __data__ = []
 
   def __init__(self):
-    self.__engine__ = create_engine("sqlite:///db/ideal_functions.db")
+    self.__engine__ = create_engine(constants.DB_PATH)
     self.__meta_data__ = MetaData()
     self.__connection__ = self.__engine__.connect()
     self.__table__ = None
@@ -48,4 +49,4 @@ class BaseTableClass:
     
     sql_query = insert(self.__table__)
     result = self.__connection__.execute(sql_query, seed_data)
-    logger.info("seed result for {} table: {}".format(self.__tablename__,))
+    logger.info("seed result for {} table: {}".format(self.__tablename__, result))

@@ -19,5 +19,11 @@ class TableDataObject(base.BaseTableClass):
     except FileNotFoundError as error:
       logger.error(error)
 
-    # import the data onto the SQLite databse
-  
+  def get_coordinates(self):
+    list_of_all_lines = []
+    x_list = self.__dataset__['x'].values
+    for i in range(1, len(self.__columns__)):
+      column = self.__columns__[i]
+      y_list = self.__dataset__[column].values
+      list_of_all_lines.append([x_list, y_list])
+    return list_of_all_lines
