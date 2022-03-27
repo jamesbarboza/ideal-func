@@ -88,10 +88,7 @@ def run():
         ideal_line = ideal_all_coordinates[i]
         ideal_r_squared = eq.apply(ideal_line[0], ideal_line[1])
         diff = abs(training_r_squared - ideal_r_squared)
-        if min_diff == None:
-          min_diff = diff
-          ideal_index = i
-        elif diff < min_diff:
+        if min_diff == None or diff < min_diff:
           min_diff = diff
           ideal_index = i
 
@@ -109,15 +106,15 @@ def run():
       y = point[1]
       min_y_delta = None
       function_index = None
-      for i in range(len(ideal_equations)):
-        eq = ideal_equations[i]
+      for j in range(len(ideal_equations)):
+        eq = ideal_equations[j]
         Y = eq.apply_to_equation(x)
         y_delta = abs(y - Y)
         equation_criteria = sqrt(2) * eq.__y__.std()
         if y_delta <= equation_criteria:
           if min_y_delta == None or y_delta < min_y_delta:
             min_y_delta = y_delta
-            function_index = i
+            function_index = j
 
       logger.info("Test: {} Function: {}".format(i, function_index))
 
