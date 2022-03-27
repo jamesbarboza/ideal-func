@@ -30,7 +30,7 @@ class BaseTableClass:
       table = Table(self.__tablename__, self.__meta_data__)
       table.append_column(Column("id", Integer, primary_key = True, autoincrement = True, nullable = False))
       for c in self.__columns__:
-          table.append_column(Column(c, Float, nullable = False))
+          table.append_column(Column(c, Float))
 
       self.__meta_data__.create_all(self.__engine__)
       self.__table__ = Table(self.__tablename__, self.__meta_data__, autoload = True, autoload_with = self.__engine__)

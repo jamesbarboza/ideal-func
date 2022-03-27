@@ -1,6 +1,5 @@
 import logger
 from pandas import Series
-import numpy as np
 
 class LeastSquared:
   __y_intercept__ = None

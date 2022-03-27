@@ -1,12 +1,11 @@
-import logging
 import sys
+from models.test import TestDataTable
 from models.Train import TableDataObject
 import logger
 import utils
 from bokeh.plotting import show
 from bokeh.layouts import row
-from pandas import Series
-from models.least_squared import LeastSquared
+from pandas import DataFrame
 from numpy import sqrt
 
 def print_help():
@@ -119,5 +118,10 @@ def run():
 
       logger.info("Test: {} {} Delta: {} Function: {}".format(x, y, min_y_delta, function_index))
       test_data_mapping.append([x, y, min_y_delta, function_index])
+
+    df = DataFrame(test_data_mapping)
+    df.rename({ 0: "x", 1: "y", 2: "y_delta", 3: "function"})
+    TestDataTable(df, "test-regression")
+
 
 run()
