@@ -6,9 +6,10 @@ class LeastSquared:
   __y_intercept__ = None
   __slope__ = None
 
-  def __init__(self, x: Series, y: Series):
+  def __init__(self, x: Series, y: Series, index):
     self.__x__ = x
     self.__y__ = y
+    self.__index__ = index
   
   def calculate_slope(self):
     logger.info("[least-squared] calculating slope")

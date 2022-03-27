@@ -17,9 +17,9 @@ def get_lines_to_plot(table_data_object):
     plotted_lines.append(get_a_plotted_line(x, y, "training-" + str(i)))
   return plotted_lines
 
-def get_equation(line):
+def get_equation(line, index):
   x = line[0]
   y = line[1]
-  least_squared = LeastSquared(x, y)
+  least_squared = LeastSquared(x, y, index)
   least_squared.calculate_slope()
   return least_squared

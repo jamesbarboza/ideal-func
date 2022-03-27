@@ -72,7 +72,7 @@ def run():
     
     # Using the training lines, get the equation for each line
     training_coordinates = train.get_coordinates()
-    training_equations = [utils.get_equation(training_coordinates[i]) for i in range(len(training_coordinates))]
+    training_equations = [utils.get_equation(training_coordinates[i], i) for i in range(len(training_coordinates))]
 
     # get the ideal lines
     ideal_all_coordinates = ideal.get_coordinates()
@@ -93,12 +93,13 @@ def run():
           ideal_index = i
 
       logger.info("Ideal function: {} : {} : {}".format(training_r_squared, min_diff, ideal_index))
-      ideal_cooridnates.append(ideal_all_coordinates[ideal_index])
+      ideal_cooridnates.append({ "coordinates": ideal_all_coordinates[ideal_index], "index": ideal_index} )
 
 
     # create ideal functions
-    ideal_equations = [utils.get_equation(ideal_cooridnates[i]) for i in range(len(ideal_cooridnates))]
+    ideal_equations = [utils.get_equation(ideal_cooridnates[i]["coordinates"], ideal_cooridnates[i]["index"]) for i in range(len(ideal_cooridnates))]
 
+    test_data_mapping = []
     # test ideal functions on test dataset
     for i in range(len(test.__data__)):
       point = test.__data__[i]
@@ -114,8 +115,9 @@ def run():
         if y_delta <= equation_criteria:
           if min_y_delta == None or y_delta < min_y_delta:
             min_y_delta = y_delta
-            function_index = j
+            function_index = ideal_equations[j].__index__
 
-      logger.info("Test: {} Function: {}".format(i, function_index))
+      logger.info("Test: {} {} Delta: {} Function: {}".format(x, y, min_y_delta, function_index))
+      test_data_mapping.append([x, y, min_y_delta, function_index])
 
 run()
