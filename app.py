@@ -1,9 +1,13 @@
+import logging
 import sys
 from models.Train import TableDataObject
 import logger
 import utils
 from bokeh.plotting import show
 from bokeh.layouts import row
+from pandas import Series
+from models.least_squared import LeastSquared
+from numpy import sqrt
 
 def print_help():
   print("Usage: app.py --train <file-path> --ideal <file-path> --test <filepath>")
@@ -55,24 +59,66 @@ def run():
     # Create the train, ideal an test objects
     train = TableDataObject(training_dataset_path, "training")
     ideal = TableDataObject(ideal_dataset_path, "ideal")
+    test = TableDataObject(test_dataset_path, "test")
 
     # create the visuals for train functions
     #   get the x and y values for each line [[[x1], [y1]], [[x2], [y2]]]
-    training_lines = utils.get_lines_to_plot(train)
-    show(row(training_lines))
+    training_figures = utils.get_lines_to_plot(train)
+    show(row(training_figures))
 
     # create the visuals for ideal functions
-    ideal_lines = utils.get_lines_to_plot(ideal)
-    show(row(ideal_lines))
+    ideal_figures = utils.get_lines_to_plot(ideal)
+    show(row(ideal_figures))
+    
+    # Using the training lines, get the equation for each line
+    training_coordinates = train.get_coordinates()
+    training_equations = [utils.get_equation(training_coordinates[i]) for i in range(len(training_coordinates))]
 
-    # train the model
+    # get the ideal lines
+    ideal_all_coordinates = ideal.get_coordinates()
 
-    # find ideal functions
+    # find ideal lines
+    ideal_cooridnates = []
+    for eq in training_equations:
+      training_r_squared = eq.calculate_r_squared()
+      min_diff = None
+      ideal_index = 0
 
-    # create the visuals of 4 ideal functions with thier training counterpart
+      for i in range(len(ideal_all_coordinates)):
+        ideal_line = ideal_all_coordinates[i]
+        ideal_r_squared = eq.apply(ideal_line[0], ideal_line[1])
+        diff = abs(training_r_squared - ideal_r_squared)
+        if min_diff == None:
+          min_diff = diff
+          ideal_index = i
+        elif diff < min_diff:
+          min_diff = diff
+          ideal_index = i
 
-    # test idea functions on test dataset
+      logger.info("Ideal function: {} : {} : {}".format(training_r_squared, min_diff, ideal_index))
+      ideal_cooridnates.append(ideal_all_coordinates[ideal_index])
 
-    # clean up
+
+    # create ideal functions
+    ideal_equations = [utils.get_equation(ideal_cooridnates[i]) for i in range(len(ideal_cooridnates))]
+
+    # test ideal functions on test dataset
+    for i in range(len(test.__data__)):
+      point = test.__data__[i]
+      x = point[0]
+      y = point[1]
+      min_y_delta = None
+      function_index = None
+      for i in range(len(ideal_equations)):
+        eq = ideal_equations[i]
+        Y = eq.apply_to_equation(x)
+        y_delta = abs(y - Y)
+        equation_criteria = sqrt(2) * eq.__y__.std()
+        if y_delta <= equation_criteria:
+          if min_y_delta == None or y_delta < min_y_delta:
+            min_y_delta = y_delta
+            function_index = i
+
+      logger.info("Test: {} Function: {}".format(i, function_index))
 
 run()

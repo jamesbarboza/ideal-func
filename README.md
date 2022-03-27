@@ -26,7 +26,6 @@ cd ideal-func
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
-```
 
 # run the app
 python app.py --train ../datasets/train.csv --ideal ../datasets/ideal.csv --test  ../datasets/test.csv
@@ -35,3 +34,14 @@ python app.py --train ../datasets/train.csv --ideal ../datasets/ideal.csv --test
 ## Resources
 
 - least squared method - [Youtube Link](https://www.youtube.com/watch?v=P8hT5nDai6A)
+- least squared method - blog - [link](https://www.edureka.co/blog/least-square-regression/)
+
+
+
+## Validation
+
+Ideal functions:
+  1. training-25
+  2. training-3
+  3. training-22
+  4. training-21
