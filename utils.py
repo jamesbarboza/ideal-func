@@ -1,5 +1,4 @@
 from bokeh.plotting import output_file, figure, show
-from bokeh.layouts import row
 from models.least_squared import LeastSquared
 
 def get_a_plotted_line(x = [], y = [], plot_name = ""):

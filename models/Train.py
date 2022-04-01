@@ -5,6 +5,10 @@ import logger
 class TableDataObject(base.BaseTableClass):
 
   def __init__(self, dataset_path = "", table_name = ""):
+    '''
+    dataset_path can be a relative or an absolute path to the dataset file in the CSV format
+    Read the dataset and perfom CRUD on the SQLite database
+    '''
     try:
       self.__dataset_path__ = dataset_path
       self.__dataset__ = read_csv(self.__dataset_path__)
@@ -18,6 +22,16 @@ class TableDataObject(base.BaseTableClass):
       raise FileNotFoundError("CSV path is incorrect")
 
   def get_coordinates(self):
+    '''
+    The seeded data will be in the format:
+    [x, y1, y2 ...]
+    We need to separate these as per each line i.e (x1, y1), (x2, y2) ... for each line
+    The expected output of the function is
+    [
+      [ [x1s ...], [y1s ...]],
+      [ [x2s ...], [y2s ...]]
+    ] 
+    '''
     list_of_all_lines = []
     x_list = self.__dataset__['x'].values
     for i in range(1, len(self.__columns__)):

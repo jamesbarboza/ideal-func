@@ -11,6 +11,19 @@ class LeastSquared:
     self.__index__ = index
   
   def calculate_slope(self):
+    '''
+    Based on the x and y values, we apply the Least Squared algo
+    This basically is to predict the y-value of the line at any given x
+    the equation to find y = mx + c
+    where,
+    m = slope
+    c = y-intercept
+    to calculate slope, we use the following formula
+    m = (total_points * sum(x*y) - sum(x) * sum(y)) / total_points * sum(x^2) - sum(x)^2
+    c = y_mean - (m * x_mean)
+
+    Y = mx + c
+    '''
     logger.info("[least-squared] calculating slope")
 
     numerator = 0
@@ -37,6 +50,11 @@ class LeastSquared:
     logger.info("y = {}x + {}".format(self.__slope__, self.__y_intercept__))
 
   def apply(self, x: Series, y:Series):
+    '''
+    We calcuate the R - squared value to compare to lines.
+    We just substitute x and y
+    if the r squared values are similar, the lines must be similar
+    '''
     total_error_rate = 0
     total_mean_error_rate = 0
     for i in range(len(x)):
@@ -50,4 +68,7 @@ class LeastSquared:
     return 1 - (total_error_rate / total_mean_error_rate)
 
   def apply_to_equation(self, x):
+    '''
+    Predict Y value for a given x point
+    '''
     return (self.__slope__ * x) + self.__y_intercept__
