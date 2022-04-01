@@ -29,7 +29,6 @@ class LeastSquared:
 
     logger.info("[least-squared] Slope: {}".format(self.__slope__))
     logger.info("[least-squared] y-intercept: {}".format(self.__y_intercept__))
-    return self.__slope__
     
   def calculate_r_squared(self):
     return self.apply(self.__x__, self.__y__)
