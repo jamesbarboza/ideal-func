@@ -37,7 +37,6 @@ python app.py --train ../datasets/train.csv --ideal ../datasets/ideal.csv --test
 - least squared method - blog - [link](https://www.edureka.co/blog/least-square-regression/)
 
 
-
 ## Validation
 
 Ideal functions:
@@ -45,3 +44,10 @@ Ideal functions:
   2. training-3
   3. training-22
   4. training-21
+
+## Unit Tests
+
+```
+python -m unittest
+```
+
